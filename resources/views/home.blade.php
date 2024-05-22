@@ -6,7 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Recuadro con Inputs y Botón</title>
     <!-- Incluir Bootstrap CSS desde un CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         /* Personaliza el estilo del recuadro */
         .recuadro {
@@ -29,7 +29,7 @@
         .logo-img {
             width: 20%; /* Cambia el tamaño según tus necesidades */
         }
-    </style>
+    </style> --}}
 </head>
 <body>
     <div class="container">
@@ -61,7 +61,7 @@
         </div>
     </div>
 
-   <script>
+   {{-- <script>
         document.getElementById('loginForm').addEventListener('submit', function(event) {
             event.preventDefault(); // Evita que el formulario se envíe automáticamente
 
@@ -97,7 +97,7 @@
                 console.error('Error en la solicitud:', error);
             });
         });
-    </script> 
+    </script>  --}}
 </body>
 </html>
 
