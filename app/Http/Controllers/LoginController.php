@@ -23,7 +23,8 @@ class LoginController extends Controller
             if (!empty($usuarios)) {
                 return $usuarios;
             } else {
-                return "0";
+                $usuarioID [] = array("UsuarioID" => 0);
+                return $usuarioID;
             }
         } catch (\Throwable $th) {
             return response()->json([], 500);
