@@ -57,7 +57,8 @@ class EstudioController extends Controller
                 $Estudio = array("EstudioID" => $EstudioID);
                 return $Estudio;
             } else {
-                return "0";
+                $Estudio = array("EstudioID" => "0");
+                return $Estudio;
             }
         } catch (\Throwable $th) {
             return response()->json([], 500);
