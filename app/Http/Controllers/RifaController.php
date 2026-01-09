@@ -18,22 +18,24 @@ class RifaController extends Controller
                 'numero' => $i,
                 'Nombre' => null,
                 'Rifar' => 0,
-                'PendientePago' => 0
+                'PendientePago' => 0,
+                'Celular' => null
             ];
         }
 
         if ($esJefe == 1 && $bRifa == 0) {
-            $numerosBD = DB::select('SELECT "Numero", "BoletoID", "PendientePago", "Nombre" FROM "Boletos" WHERE "Rifar" = 1 AND ("Gano" != 0 OR "Gano" IS NULL)');
+            $numerosBD = DB::select('SELECT "Numero", "BoletoID", "PendientePago", "Nombre", "Celular" FROM "Boletos" WHERE "Rifar" = 1 AND ("Gano" != 0 OR "Gano" IS NULL)');
             foreach ($numerosBD as $numero) {
                 if (isset($boletosArray[$numero->Numero])) {
                     $boletosArray[$numero->Numero]['BoletoID'] = $numero->BoletoID;
                     $boletosArray[$numero->Numero]['Rifar'] = 1;
                     $boletosArray[$numero->Numero]['PendientePago'] = $numero->PendientePago;
                     $boletosArray[$numero->Numero]['Nombre'] = $numero->Nombre;
+                    $boletosArray[$numero->Numero]['Celular'] = $numero->Celular;
                 }
             }
         } else if ($esJefe == 1 && $bRifa == 1) {
-            $numerosBD = DB::select('SELECT "Numero", "BoletoID", "Nombre" FROM "Boletos" WHERE "Rifar" = 1 AND "PendientePago" = 1 AND ("Gano" != 0 OR "Gano" IS NULL)');
+            $numerosBD = DB::select('SELECT "Numero", "BoletoID", "Nombre", "Celular" FROM "Boletos" WHERE "Rifar" = 1 AND "PendientePago" = 1 AND ("Gano" != 0 OR "Gano" IS NULL)');
             $boletosArray = [];
             foreach ($numerosBD as $numero) {
                 $boletosArray[$numero->Numero] = [
@@ -41,7 +43,8 @@ class RifaController extends Controller
                     'numero' => $numero->Numero,
                     'Rifar' => 1,
                     'PendientePago' => 1,
-                    'Nombre' => $numero->Nombre
+                    'Nombre' => $numero->Nombre,
+                    'Celular' => $numero->Celular
                 ];
             }
         } else if ($esJefe == 0) {
@@ -70,12 +73,14 @@ class RifaController extends Controller
     {
         $NumeroBoleto = $request->input('NumeroBoleto');
         $Nombre = $request->input('Nombre');
+        $Celular = $request->input('Celular');
+
         try {
             $numerosBD = DB::select('SELECT "BoletoID" FROM "Boletos" WHERE "Numero" = ?', [$NumeroBoleto]);
             if (empty($numerosBD)) {
                 DB::insert(
-                    'INSERT INTO "Boletos" ("Numero", "Nombre", "PendientePago", "Rifar", "FechaRegistro") VALUES (?, ?, ?, ?, ?)',
-                    [$NumeroBoleto, $Nombre, 0, 1, now()]
+                    'INSERT INTO "Boletos" ("Numero", "Nombre", "PendientePago", "Rifar", "FechaRegistro", "Celular") VALUES (?, ?, ?, ?, ?, ?)',
+                    [$NumeroBoleto, $Nombre, 0, 1, now(), $Celular]
                 );
             } else {
                 return response()->json([], 500);
